@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.Map;
-import org.json.JSONObject;
 
 @Service
 public class ResumeServiceImpl implements ResumeService {
@@ -21,14 +21,14 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public JSONObject generateResumeResponse(String userResumeDescription) throws  IOException {
+    public Map<String, Object> generateResumeResponse(String userResumeDescription) throws  IOException {
         String promptString = this.loadPromptFromFile("resume_prompt.txt");
         String promptContent = this.putValuesToTemplate(promptString,Map.of("userDescription",userResumeDescription));
         Prompt prompt = new Prompt(promptContent);
         String response = chatClient.prompt(prompt).call().content();
 
-        JSONObject jsonpObject =  parseMultipleResponse(response);
-        return jsonpObject;
+        Map<String, Object> stringObjectMap =  parseMultipleResponse(response);
+        return stringObjectMap;
     }
 
     String loadPromptFromFile(String filename) throws IOException {
@@ -42,8 +42,8 @@ public class ResumeServiceImpl implements ResumeService {
         }
             return template;
 }
-    public static JSONObject parseMultipleResponse(String response) {
-        JSONObject jsonResponse = new JSONObject();
+    public static Map<String, Object> parseMultipleResponse(String response) {
+        Map<String, Object> jsonResponse = new HashMap<>();
 
         // Extract "think" content
         int thinkStart = response.indexOf("<think>") + 7;
@@ -52,7 +52,7 @@ public class ResumeServiceImpl implements ResumeService {
             String thinkContent = response.substring(thinkStart, thinkEnd).trim();
             jsonResponse.put("think", thinkContent);
         } else {
-            jsonResponse.put("think", JSONObject.NULL);
+            jsonResponse.put("think", null);
         }
 
         // Extract JSON content
@@ -61,14 +61,15 @@ public class ResumeServiceImpl implements ResumeService {
         if (jsonStart != -1 + 7 && jsonEnd != -1 && jsonStart < jsonEnd) {
             String jsonContent = response.substring(jsonStart, jsonEnd).trim();
             try {
-                JSONObject dataContent = new JSONObject(jsonContent);
+                Map<String, Object> dataContent = new HashMap<>();
+                dataContent = new com.fasterxml.jackson.databind.ObjectMapper().readValue(jsonContent, Map.class);
                 jsonResponse.put("data", dataContent);
             } catch (Exception e) {
-                jsonResponse.put("data", JSONObject.NULL);
+                jsonResponse.put("data", null);
                 System.err.println("Invalid JSON format in the response: " + e.getMessage());
             }
         } else {
-            jsonResponse.put("data", JSONObject.NULL);
+            jsonResponse.put("data", null);
         }
 
         return jsonResponse;
