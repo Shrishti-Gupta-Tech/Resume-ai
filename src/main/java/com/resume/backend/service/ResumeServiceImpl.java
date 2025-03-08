@@ -1,6 +1,5 @@
 package com.resume.backend.service;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.core.io.ClassPathResource;
@@ -22,14 +21,14 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public String generateResumeResponse(String userResumeDescription) throws  IOException {
+    public JSONObject generateResumeResponse(String userResumeDescription) throws  IOException {
         String promptString = this.loadPromptFromFile("resume_prompt.txt");
         String promptContent = this.putValuesToTemplate(promptString,Map.of("userDescription",userResumeDescription));
         Prompt prompt = new Prompt(promptContent);
         String response = chatClient.prompt(prompt).call().content();
 
         JSONObject jsonpObject =  parseMultipleResponse(response);
-        return response;
+        return jsonpObject;
     }
 
     String loadPromptFromFile(String filename) throws IOException {
