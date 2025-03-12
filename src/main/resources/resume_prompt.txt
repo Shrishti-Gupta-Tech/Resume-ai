@@ -1,47 +1,53 @@
-Generate a professional and well-structured resume in JSON format  for a Java Developer that is concise, impactful, and ATS-friendly. The resume should include clear formatting, bullet points, and action-oriented language to highlight key skills and achievements. Begin with a compelling professional summary in 3-4 sentences, emphasizing years of experience, key technologies, and expertise in backend development, cloud computing, and system optimization. Clearly list technical skills categorized into programming languages, frameworks, databases, cloud technologies, DevOps tools, and other relevant skills. For work experience, provide job title, company name, location, and duration, followed by key responsibilities and achievements using concise bullet points with impact-driven statements and strong action verbs such as 'Developed,' 'Optimized,' 'Led,' and 'Designed.' Ensure that each achievement is quantifiable where possible. Include education details with degree, university, location, and graduation year. List relevant certifications with the issuing organization and year obtained. Describe key projects, highlighting technologies used, challenges solved, and GitHub links if available. Showcase achievements such as open-source contributions, speaking engagements, and recognitions. Additionally, include languages spoken and hobbies or interests that align with technology, leadership, or continuous learning. The final resume should be professionally formatted, well-structured, easy to read, and optimized for recruiters and hiring managers.
-Input Description:" {{userDescription}} "
-JSON format requirements
-Ensure all the keys are added and covered
+Generate a professional IT job resume in JSON format based on the following description. Ensure the JSON is consistent, well-structured, and contains all specified keys, even if some values are empty or null. Use the exact keys provided below and maintain their hierarchy.
+
+Input Description:
+"{{userDescription}}"
+
+JSON Structure Requirements:
 personalInformation: Include the following keys:
-fullName (string) → The full name of the individual.
-email (string) → The email address.
-phoneNumber (string) → The contact phone number.
-location (string) → The city/state where the individual is based.
-linkedIn (string) → The LinkedIn profile URL.
-gitHub (string) → The GitHub profile URL.
-portfolio (string) → A link to their personal portfolio website.
-summary (string) → A brief professional summary describing expertise and career goals.
-skillsSection: Include the following keys:
-programmingLanguages (array of strings) → List of programming languages known.
-frameworks (array of strings) → List of frameworks and libraries used.
-databases (array of strings) → List of relational and NoSQL databases.
-cloud (array of strings) → Cloud platforms experienced in.
-devOpsTools (array of strings) → DevOps tools used.
-otherSkills (array of strings) → Any additional relevant technical skills.
-experienceSection (Array of Objects):Include the following keys:
-Each experience entry contains:
-jobTitle (string) → The title of the job position.
-company (string) → The name of the company.
-location (string) → The location of the company.
-duration (string) → The time period of employment.
-responsibilities (array of strings) → Key responsibilities and achievements in this role.
-educationSection:Include the following keys:
-degree (string) → The degree earned.
-university (string) → The university name.
-location (string) → The university's location.
-graduationYear (string) → The year of graduation.
-certificationsSection (Array of Objects):Include the following keys:
-Each certification entry contains:
-title (string) → The name of the certification.
-issuingOrganization (string) → The organization that issued the certification.
-year (string) → The year it was issued.
-projectsSection (Array of Objects):Include the following keys:
-Each project entry contains:
-title (string) → The project name.
-description (string) → A short description of the project.
-technologiesUsed (array of strings) → Technologies used in the project.
-githubLink (string) → GitHub repository link.
-Additional Fields
-achievements (array of strings) → Key career achievements.
-languages (array of strings) → Languages spoken.
-interestsAndHobbies (array of strings) → Personal interests and hobbies.
+fullName (string)
+email (string)
+phoneNumber (string)
+location (string)
+linkedIn (string or null if not provided)
+gitHub (string or null if not provided)
+portfolio (string or null if not provided)
+summary: A brief overview of skills, experience, and career goals (string).
+skills: List of object that contain two keys 'title' and 'level'
+
+experience: A list of job roles. Each job role should include:
+jobTitle (string)
+company (string)
+location (string)
+duration (string, e.g., "Jan 2020 - Present")
+responsibility(string)
+
+education: A list of degrees. Each degree should include:
+degree (string)
+university (string)
+location (string)
+graduationYear (string)
+
+certifications: A list of certifications. Each certification should include:
+title (string)
+issuingOrganization (string)
+year (string)
+
+projects: A list of key projects. Each project should include:
+title (string)
+description (string)
+technologiesUsed (array of strings)
+githubLink (string or null if not provided)
+
+achievements: A list achievements that contains objects of keys
+title (string)
+year(string)
+extraInformation(string)
+
+languages: A list of spoken languages objects contain keys
+id(number)
+name(string)
+
+interests: A list of additional interests or hobbies related to technology or professional development  [list of objects having keys].
+id(number)
+name(string)
